@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- puxando o script do phaser via web -->
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+        <!-- Título da página -->
+    <title>Exercício do Pássaro</title>
+        <!-- Estilizando código -->
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;  
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        // Estilizando o script do phaser
+        var config = {
+            type: Phaser.AUTO,
+            width: 800,
+            height: 480,
+    
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+        
+        var game = new Phaser.Game(config);
+        var passarinho;
+        var passarinhoY;
+        function preload() {
+            
+            this.load.image('bg', 'assets/space.jpg');
+            this.load.spritesheet('bird', 'assets/bird-purple.png', { frameWidth: 75, frameHeight: 75 });
+        }
+    
+        function create() {
+            // Adicionando as imagens na tela e determinadas ações
+            this.add.image(400, 250, 'bg').setScale(0.5);
+            passarinho = this.add.sprite(100, 300, 'bird').setScale(1.3)
+            passarinhoY = this.add.sprite(100, 300, 'bird').setScale(1.3)
+            this.anims.create({
+                key: 'fly',
+                frames: this.anims.generateFrameNumbers('bird', { start: 0, end: 7 }), 
+                FrameRate: 10,
+                repeat: -1
+            });
+
+            passarinho.anims.play('fly', true);
+            passarinhoY.anims.play('fly', true);
+        }
+    
+        function update() { 
+            // Adicioando movimento X
+            if (passarinho.x === 100) {
+            passarinho.setFlip(false, false);
+            passarinho.ida = true;
+            }
+             // Definindo velocidade do mvoimento X
+            while (passarinho.x < 700 && passarinho.ida === true) {
+            passarinho.x += 5;
+            break
+            }
+            if (passarinho.x === 700) {
+            passarinho.setFlip(true, false);
+            passarinho.ida = false;
+            }
+            // Definindo velocidade do mvoimento X
+            if (passarinho.x > 100 && passarinho.ida === false) {
+            passarinho.x -= 5;
+            }
+            // Adicionando movimento Y
+            if (passarinhoY.y <= 50) {
+                passarinhoY.setFlip(false, false);
+                passarinhoY.ida = true;
+            }
+
+            if (passarinhoY.y >= 350) {
+                passarinhoY.setFlip(false, false);
+                passarinhoY.ida = false;
+            }
+
+            // Definindo velocidade do mvoimento Y
+            if (passarinhoY.ida) {
+                passarinhoY.y += 5;
+            } else {
+                passarinhoY.y -= 5;
+            }
+     }
+    </script>
+
+</body>
+</html>
